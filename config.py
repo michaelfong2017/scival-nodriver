@@ -18,8 +18,13 @@ OAUTH2_URL = 'https://id-elsevier-com.ezproxy.cityu.edu.hk/as/authorization.oaut
 RESEARCHERS_URL = 'https://www-scival-com.ezproxy.cityu.edu.hk/mySciVal?selection=researchers'
 
 # Paths
-DOWNLOAD_DIR = "./scival_downloads"  # Custom local folder for downloads
+DOWNLOAD_DIR = "./scival_downloads"
 RESEARCHER_IDS_CSV = 'researcher_ids.csv'
 
 # Browser configuration
 BROWSER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
+
+# Operation Mode Selection
+# Set to "full" for complete workflow (export -> import -> extract)
+# Set to "extract" for login -> extract only
+OPERATION_MODE = "extract"  # Change this to "full" or "extract"
