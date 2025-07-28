@@ -27,4 +27,4 @@ BROWSER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 # Operation Mode Selection
 # Set to "full" for complete workflow (export -> import -> extract)
 # Set to "extract" for login -> extract only
-OPERATION_MODE = "extract"  # Change this to "full" or "extract"
+OPERATION_MODE = "full"  # Change this to "full" or "extract"

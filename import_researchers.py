@@ -21,6 +21,49 @@ def read_researcher_ids_from_csv(csv_file_path=RESEARCHER_IDS_CSV):
         print(f"Error reading CSV file: {e}")
         return []
 
+async def check_if_no_existing_researchers(tab):
+    """Check if there are no existing researchers by looking for the 'no researchers' h2 element"""
+    try:
+        # Navigate to researchers page
+        await tab.get(RESEARCHERS_URL)
+        await asyncio.sleep(5)
+        
+        print("Checking if researchers already exist...")
+        
+        # Check for the specific h2 element that indicates no existing researchers
+        no_researchers_found = await tab.evaluate("""
+            (function() {
+                try {
+                    const xpath = '//h2[normalize-space()="You have not defined any Researchers yet."]';
+                    const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                    const h2Element = result.singleNodeValue;
+                    
+                    if (h2Element) {
+                        console.log('Found h2 element - no existing researchers');
+                        console.log('Element text:', h2Element.textContent);
+                        return true;
+                    } else {
+                        console.log('h2 element not found - researchers likely exist');
+                        return false;
+                    }
+                } catch (error) {
+                    console.error('Error checking for h2 element:', error);
+                    return false;
+                }
+            })()
+        """)
+        
+        if no_researchers_found:
+            print("✅ No existing researchers detected (found 'You have not defined any Researchers yet.' message)")
+            return True
+        else:
+            print("✅ Existing researchers detected (no 'You have not defined any Researchers yet.' message)")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Error checking for existing researchers: {e}")
+        return False  # Default to assuming researchers exist
+
 async def import_researcher(tab, researcher_id):
     """Import a single researcher using their ID - FIXED VERSION"""
     try:
